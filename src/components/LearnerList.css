@@ -1,0 +1,76 @@
+.table {
+    border: 1px solid #ccc;
+    border-collapse: collapse;
+    margin: 0;
+    padding: 0;
+    table-layout: fixed;
+    width: 100%;
+  }
+  
+  table tr {
+    background-color: #f8f8f8;
+    border: 1px solid #ddd;
+    padding: .35em;
+  }
+  
+  table th,
+  table td {
+    padding: .625em;
+    text-align: center;
+  }
+
+  @media screen and (max-width: 600px) {
+    table thead {
+      border: none;
+      clip: rect(0 0 0 0);
+      height: 1px;
+      margin: -1px;
+      overflow: hidden;
+      padding: 0;
+      position: absolute;
+      width: 1px;
+    }
+    
+    table tr {
+      border-bottom: 3px solid #ddd;
+      display: block;
+    }
+    
+    table td {
+      border-bottom: 1px solid #ddd;
+      display: block;
+      text-align: right;
+    }
+    
+    table td::before {
+      content: attr(data-label);
+      float: left;
+    }
+  }
+
+  .Absolute-Center { 
+    height: 15%; /* Set your own height: percents, ems, whatever! */
+    width: 50%; /* Set your own width: percents, ems, whatever! */
+    overflow: auto; /* Recommended in case content is larger than the container */
+    margin: auto; /* Center the item vertically & horizontally */
+    position: absolute; /* Break it out of the regular flow */
+    top: 0; left: 0; bottom: 0; right: 0; /* Set the bounds in which to center it, relative to its parent/container */
+  }
+  
+  /* Make sure our center blocks stay in their container! */
+  .Center-Container { position: relative; }
+
+  /* Fixed floating element within viewport */
+  .Absolute-Center.is-Fixed { 
+    position: fixed;
+    z-index: 999;
+  }
+  
+  /* Min/Max Width */
+  .Absolute-Center.is-Responsive {
+    width: 50%; 
+    height: 50%;
+    min-width: 200px;
+    max-width: 400px;
+    padding: 40px;
+  }
