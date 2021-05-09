@@ -1,6 +1,13 @@
 import React, { useState, useEffect } from "react";
 import firebase from "../firebase";
-import { Table, Container, Button, Alert, Card } from "react-bootstrap";
+import {
+  Table,
+  Container,
+  Button,
+  Card,
+  InputGroup,
+  FormControl,
+} from "react-bootstrap";
 import "./LearnerList.css";
 
 const LearnerList = () => {
@@ -10,6 +17,7 @@ const LearnerList = () => {
   const [loading, setLoading] = useState(false);
 
   const [view, setView] = useState(false);
+  const [editView, setEditView] = useState(false);
   const [firstName, setFirstName] = useState();
   const [lastName, setLastName] = useState();
   const [email, setEmail] = useState();
@@ -33,7 +41,7 @@ const LearnerList = () => {
   useEffect(() => {
     getLearners();
     calculateAverageScore();
-  }, [view]);
+  }, []);
 
   const calculateAverageScore = () => {
     ref.onSnapshot((querySnapshot) => {
@@ -77,6 +85,13 @@ const LearnerList = () => {
                 <Button variant="primary" onClick={() => viewLearner(learner)}>
                   View
                 </Button>
+                <Button
+                  variant="primary"
+                  style={{ margin: "5px" }}
+                  onClick={() => editLearnerView(learner)}
+                >
+                  Edit
+                </Button>
               </td>
             </tr>
           </tbody>
@@ -97,7 +112,34 @@ const LearnerList = () => {
 
   const closeView = () => {
     setView(false);
+    setEditView(false);
   };
+
+  const editLearnerView = (e) => {
+    console.log(e);
+    setEditView(true);
+    setFirstName(e.firstName);
+    setLastName(e.lastName);
+    setEmail(e.email);
+    setScore(e.score);
+    setId(e.id);
+  };
+
+  const editLearner = () => {
+    const updatedLearner = {
+      firstName: firstName,
+      lastName: lastName,
+      email: email,
+      score: parseInt(score)
+    };
+
+    ref.doc(id).update(updatedLearner).then(() => {
+      console.log("Document successfully updated!");
+    })
+    .catch((error) => {
+      console.error("Error updating document: ", error);
+    });
+  }
 
   return (
     <div>
@@ -116,13 +158,83 @@ const LearnerList = () => {
                   className="ms-auto btn-close"
                   onClick={() => closeView()}
                 ></Button>
-                <Card.Title>{firstName} {lastName}</Card.Title>
-                <Card.Subtitle className="text-muted">{email}</Card.Subtitle>
+                <Card.Title>
+                  {firstName} {lastName}
+                </Card.Title>
+                <Card.Subtitle className="text-muted">Email: {email}</Card.Subtitle>
                 <Card.Body>
                   <Card.Text>Score: {score}</Card.Text>
                 </Card.Body>
               </Card>
             </div>
+          ) : null}
+        </div>
+        <div>
+          {editView ? (
+            <Card className="Absolute-Center-Edit is-Fixed">
+              <Button
+                className="ms-auto btn-close"
+                onClick={() => closeView()}
+              ></Button>
+              <Card.Title className="text-center">Edit Learner</Card.Title>
+              <Card.Body>
+                <label htmlFor="First Name">First Name</label>
+                <InputGroup size="sm" className="mb-3">
+                  <FormControl
+                    id="First Name"
+                    aria-describedby="inputGroup-sizing-sm"
+                    defaultValue={firstName}
+                    onChange={(e) => setFirstName(e.target.value)}
+                  />
+                </InputGroup>
+                <label htmlFor="Last Name">Last Name</label>
+
+                <InputGroup size="sm" className="mb-3">
+                  <FormControl
+                    id="Last Name"
+                    aria-describedby="inputGroup-sizing-sm"
+                    defaultValue={lastName}
+                    onChange={(e) => setLastName(e.target.value)}
+                  />
+                </InputGroup>
+
+                <label htmlFor="Email">Email</label>
+                <InputGroup size="sm" className="mb-3">
+                  <FormControl
+                    id="Email"
+                    aria-describedby="inputGroup-sizing-sm"
+                    defaultValue={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                  />
+                </InputGroup>
+
+                <label htmlFor="score">Score</label>
+                <select
+                  className="form-select"
+                  id="score"
+                  type="number"
+                  defaultValue={score}
+                  onChange={(e) => setScore(e.target.value)}
+                >
+                  <option>0</option>
+                  <option>1</option>
+                  <option>2</option>
+                  <option>3</option>
+                  <option>4</option>
+                  <option>5</option>
+                  <option>6</option>
+                  <option>7</option>
+                  <option>8</option>
+                  <option>9</option>
+                  <option>10</option>
+                </select>
+              </Card.Body>
+              <Card.Footer className="text-muted">
+                <div className="text-center">
+                <Button variant="primary" onClick={() => editLearner()}>Submit</Button>
+                </div>
+              </Card.Footer>
+            </Card>
           ) : null}
         </div>
       </Container>
