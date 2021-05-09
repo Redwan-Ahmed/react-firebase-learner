@@ -29,6 +29,7 @@ const LearnerList = () => {
 
   const ref = firebase.firestore().collection("learners");
 
+  // GET Learners
   function getLearners() {
     setLoading(true);
     ref.onSnapshot((querySnapshot) => {
@@ -41,6 +42,7 @@ const LearnerList = () => {
     });
   }
 
+  // Calculate Average Score
   const calculateAverageScore = () => {
     ref.onSnapshot((querySnapshot) => {
       let sum = 0;
@@ -110,6 +112,7 @@ const LearnerList = () => {
     );
   });
 
+  // View Learner Details
   const viewLearner = (e) => {
     console.log(e);
     setView(true);
@@ -120,11 +123,13 @@ const LearnerList = () => {
     setId(e.id);
   };
 
+  // Pop up view handler
   const closeView = () => {
     setView(false);
     setEditView(false);
   };
 
+  // Edit Learner Details
   const editLearnerView = (e) => {
     console.log(e);
     setEditView(true);
@@ -135,6 +140,7 @@ const LearnerList = () => {
     setId(e.id);
   };
 
+  // Calling Firebase to update the learner's details
   const editLearner = () => {
     const updatedLearner = {
       firstName: firstName,

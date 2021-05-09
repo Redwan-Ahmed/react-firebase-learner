@@ -11,6 +11,7 @@ const LearnerCreate = () => {
 
   const ref = firebase.firestore().collection("learners");
 
+  // Calling Firebase to create new Learner
   function addLearner() {
     var id = uuidv4();
 
