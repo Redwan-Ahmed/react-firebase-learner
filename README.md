@@ -1,5 +1,5 @@
 # Learners - Everlearn Holding Task
-👉[Demo](https://learner-app-79c7d.firebaseapp.com/)👈 *Note: Suggested browser to run demo is on **Google Chrome**.*
+👉[Demo](https://learner-app-79c7d.firebaseapp.com/)👈 *Note: Suggested browser to run demo on **Google Chrome**.*
 
 ## What is this project? 🤔
 * A Single Page Application (mobile responsive) that allows users to view a list of learners, to edit or create a new learner the user must login.
@@ -22,6 +22,7 @@
 3. Fix minor warnings cause by useEffect hook regarding memory leak issues.
 4. add comments (due to time, I didn't want to spend to much time on comments).
 5. add testing/automated testing.
+6. add validation on forms and login/sign up.
 
 ## Technologies used: 🖥
 1. React
