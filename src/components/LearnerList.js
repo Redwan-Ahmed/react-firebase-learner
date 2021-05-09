@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import firebase from "../firebase";
 import {
   Table,
@@ -9,6 +9,7 @@ import {
   FormControl,
 } from "react-bootstrap";
 import "./LearnerList.css";
+import { AuthContext } from "../auth/Auth";
 
 const LearnerList = () => {
   // declaring my use states
@@ -24,6 +25,8 @@ const LearnerList = () => {
   const [score, setScore] = useState();
   const [id, setId] = useState();
 
+  const [isSignedIn, setIsSignedIn] = useContext(AuthContext);
+
   const ref = firebase.firestore().collection("learners");
 
   function getLearners() {
@@ -38,11 +41,6 @@ const LearnerList = () => {
     });
   }
 
-  useEffect(() => {
-    getLearners();
-    calculateAverageScore();
-  }, []);
-
   const calculateAverageScore = () => {
     ref.onSnapshot((querySnapshot) => {
       let sum = 0;
@@ -53,6 +51,16 @@ const LearnerList = () => {
       setAverageScore(average);
     });
   };
+
+  useEffect(() => {
+    getLearners();
+    calculateAverageScore();
+    return () => {
+      setAverageScore(0);
+      setLearners([]);
+      setLoading(false);
+    };
+  }, []);
 
   if (loading) {
     return <h1>Loading...</h1>;
@@ -85,13 +93,15 @@ const LearnerList = () => {
                 <Button variant="primary" onClick={() => viewLearner(learner)}>
                   View
                 </Button>
-                <Button
-                  variant="primary"
-                  style={{ margin: "5px" }}
-                  onClick={() => editLearnerView(learner)}
-                >
-                  Edit
-                </Button>
+                {isSignedIn ? (
+                  <Button
+                    variant="primary"
+                    style={{ margin: "5px" }}
+                    onClick={() => editLearnerView(learner)}
+                  >
+                    Edit
+                  </Button>
+                ) : null}
               </td>
             </tr>
           </tbody>
@@ -130,16 +140,19 @@ const LearnerList = () => {
       firstName: firstName,
       lastName: lastName,
       email: email,
-      score: parseInt(score)
+      score: parseInt(score),
     };
 
-    ref.doc(id).update(updatedLearner).then(() => {
-      console.log("Document successfully updated!");
-    })
-    .catch((error) => {
-      console.error("Error updating document: ", error);
-    });
-  }
+    ref
+      .doc(id)
+      .update(updatedLearner)
+      .then(() => {
+        console.log("Document successfully updated!");
+      })
+      .catch((error) => {
+        console.error("Error updating document: ", error);
+      });
+  };
 
   return (
     <div>
@@ -161,7 +174,9 @@ const LearnerList = () => {
                 <Card.Title>
                   {firstName} {lastName}
                 </Card.Title>
-                <Card.Subtitle className="text-muted">Email: {email}</Card.Subtitle>
+                <Card.Subtitle className="text-muted">
+                  Email: {email}
+                </Card.Subtitle>
                 <Card.Body>
                   <Card.Text>Score: {score}</Card.Text>
                 </Card.Body>
@@ -231,7 +246,9 @@ const LearnerList = () => {
               </Card.Body>
               <Card.Footer className="text-muted">
                 <div className="text-center">
-                <Button variant="primary" onClick={() => editLearner()}>Submit</Button>
+                  <Button variant="primary" onClick={() => editLearner()}>
+                    Submit
+                  </Button>
                 </div>
               </Card.Footer>
             </Card>
