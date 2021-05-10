@@ -17,12 +17,13 @@
 8. Logging out - once logged in you can log out, this will not allow you to edit or create learners.
 
 ## What Improvements I would make: 📝
-1. add protected routes, so users cannot manually go to pages without authentication.
-2. Although I used middleware for Authentication, I would use a middleware for firebase functions. I didn't implement a middleware for firebase functions since their were really only 3 main functions (get, edit, create) therefore I just done the functions inside the components. In conclusion, to make the firebase functions more reusable it would be best to make a middleware for them.
-3. Fix minor warnings cause by useEffect hook regarding memory leak issues.
-4. add comments (due to time, I didn't want to spend to much time on comments).
-5. add testing/automated testing.
-6. add validation on forms and login/sign up.
+1. Add protected routes, so users cannot manually go to pages without authentication.
+2. Although I used middleware for Authentication, I would use a middleware for firebase functions. I didn't implement a middleware for firebase functions since there were really only 3 main functions (get, edit, create) therefore I just done the functions inside the components. In conclusion, to make the firebase functions more reusable it would be best to make a middleware for them, so other components can use them.
+3. Fix the minor warnings cause by useEffect hook regarding memory leak issues.
+4. Add comments (due to time, I didn't want to spend to much time on comments).
+5. Add testing/automated testing.
+6. Add validation on forms and login/sign up.
+7. Show alerts if login or sign up has failed, and display the error message i.e. wrong credentials entered.
 
 ## Technologies used: 🖥
 1. React
